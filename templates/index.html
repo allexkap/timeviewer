@@ -1,0 +1,31 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Activity Visualization</title>
+    <style>
+        .box {
+            width: 10px;
+            height: 10px;
+            border-radius: 20%;
+            border-color: #0001;
+            border-width: 1px;
+            border-style: solid;
+        }
+    </style>
+</head>
+
+<body>
+    <table style="border-spacing: 4px;">
+        {% for line in data %}
+        <tr>
+            {% for entry in line %}
+            <td class="box" style="background-color: rgba(65, 131, 196, {{entry}});" />
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
