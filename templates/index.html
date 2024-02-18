@@ -26,7 +26,11 @@
         {% for line in table %}
         <tr>
             {% for cell in line %}
+            {% if cell >= 0 %}
             <td class="box" style="background-color: rgba(65, 131, 196, {{cell}});" />
+            {% else %}
+            <td class="box" style="border-color: #0000;" />
+            {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}
