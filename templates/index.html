@@ -4,7 +4,7 @@
 <head>
     <title>Activity Visualization</title>
     <style>
-        .box {
+        .cell {
             width: 10px;
             height: 10px;
             border-radius: 20%;
@@ -16,20 +16,29 @@
 </head>
 
 <body>
-    <form>
-        <input type="date" id="from" name="from" value="{{dates[0]}}"> -
-        <input type="date" id="to" name="to" value="{{dates[1]}}">
+    <form method="post">
+        <input type="date" name="from" value="{{dates[0]}}"> -
+        <input type="date" name="to" value="{{dates[1]}}">
+        <select name="app" onchange="this.form.submit()">
+            {% for app in apps[0] %}
+            {% if app == apps[1] %}
+            <option value="{{app}}" selected>{{app}}</option>
+            {% else %}
+            <option value="{{app}}">{{app}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
         <input type="submit" value="Submit">
         <font color="red">{{error_msg}}</font>
     </form>
     <table style="border-spacing: 4px;">
         {% for line in table %}
         <tr>
-            {% for cell in line %}
-            {% if cell >= 0 %}
-            <td class="box" style="background-color: rgba(65, 131, 196, {{cell}});" />
+            {% for value in line %}
+            {% if value >= 0 %}
+            <td class="cell" style="background-color: rgba(65, 131, 196, {{value}});" />
             {% else %}
-            <td class="box" style="border-color: #0000;" />
+            <td class="cell" style="border-color: #0000;" />
             {% endif %}
             {% endfor %}
         </tr>
