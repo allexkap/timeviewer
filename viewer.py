@@ -1,5 +1,5 @@
 from collections import Counter
-from datetime import timedelta
+from datetime import datetime, timedelta
 from itertools import chain
 
 import numpy as np
@@ -19,6 +19,9 @@ def get_log_handler(titles=None):
 
 def gen_day_view(logs, log_handler, start, stop, hour_shift=8):
     assert not timedelta(days=1) % logs.precision
+
+    start = datetime.combine(start, datetime.min.time())
+    stop = datetime.combine(stop, datetime.min.time())
 
     start_offset = start.weekday()
     start -= timedelta(days=start_offset)

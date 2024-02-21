@@ -1,14 +1,19 @@
+import os
 from datetime import date
 
 import numpy as np
 from flask import Flask, render_template, request
 
-from dummy_logs import DummyLogs
+from screen_logs import ScreenLogs
 from viewer import gen_day_view, get_log_handler
 
 app = Flask(__name__)
 
-logs = DummyLogs()
+logs = ScreenLogs(
+    os.environ['TIMEVIEWER_DB_PATH'],
+    os.environ['TIMEVIEWER_RAW_PATH'],
+    os.environ['TIMEVIEWER_BAK_PATH'],
+)
 
 
 def normalize(arr):
@@ -36,8 +41,6 @@ def index():
                 offset += 1
             else:
                 break
-
-    logs.random.seed(0)
 
     titles = ('test0', 'test1', 'test2')  # gen titles from logs
 
