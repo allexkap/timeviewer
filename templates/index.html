@@ -19,12 +19,12 @@
     <form method="post">
         <input type="date" name="from" value="{{dates[0]}}"> -
         <input type="date" name="to" value="{{dates[1]}}">
-        <select name="app" onchange="this.form.submit()">
-            {% for app in apps[0] %}
-            {% if app == apps[1] %}
-            <option value="{{app}}" selected>{{app}}</option>
+        <select name="title" onchange="this.form.submit()">
+            {% for title in titles %}
+            {% if title == selected_title %}
+            <option value="{{title}}" selected>{{title}}</option>
             {% else %}
-            <option value="{{app}}">{{app}}</option>
+            <option value="{{title}}">{{title}}</option>
             {% endif %}
             {% endfor %}
         </select>
@@ -32,11 +32,11 @@
         <font color="red">{{error_msg}}</font>
     </form>
     <table style="border-spacing: 4px;">
-        {% for line in table %}
+        {% for line in data %}
         <tr>
-            {% for value in line %}
+            {% for value, desc in line %}
             {% if value >= 0 %}
-            <td class="cell" style="background-color: rgba(65, 131, 196, {{value}});" />
+            <td class="cell" style="background-color: rgba(65, 131, 196, {{value|round(3)}});" title="{{desc}}h" />
             {% else %}
             <td class="cell" style="border-color: #0000;" />
             {% endif %}

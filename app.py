@@ -8,7 +8,16 @@ from viewer import gen_day_view, get_log_handler
 
 app = Flask(__name__)
 
-dummy_logs = DummyLogs()
+logs = DummyLogs()
+
+
+def normalize(arr):
+    return arr.astype(dtype=float) / arr.max()
+
+
+def zip2d(*args):
+    for axes in zip(*args):
+        yield zip(*axes)
 
 
 @app.route('/', methods=['get', 'post'])
@@ -19,15 +28,35 @@ def index():
         assert start < stop
     except:
         stop = date.today()
-        start = stop.replace(year=stop.year - 1)
+        offset = 0
+        while True:
+            try:
+                start = stop.replace(year=stop.year - 1, day=stop.day - offset)
+            except ValueError:
+                offset += 1
+            else:
+                break
 
-    apps = (('app0', 'app1', 'app2'), request.form.get('app', ''))
+    logs.random.seed(0)
 
-    dummy_logs.random.seed(0)
+    titles = ('test0', 'test1', 'test2')  # gen titles from logs
+
+    selected_title = request.form.get('title')
+    if selected_title is None:
+        selected_title = titles[0]
+
     handler = get_log_handler()
-    table = gen_day_view(dummy_logs, handler, start, stop) / 255
+    table = gen_day_view(logs, handler, start, stop)
+    values = normalize(table)
+    details = table  # get repr from logs
 
-    return render_template('index.html', table=table, apps=apps, dates=(start, stop))
+    return render_template(
+        'index.html',
+        titles=titles,
+        selected_title=selected_title,
+        dates=(start, stop),
+        data=zip2d(values, details),
+    )
 
 
 if __name__ == '__main__':
