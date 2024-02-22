@@ -47,3 +47,7 @@ class ScreenLogs:
 
     def __getitem__(self, ts: datetime):
         return self.logs.get(ts.strftime(ScreenLogs.timestamp_format), Counter())
+
+    @staticmethod
+    def get_detail(value):
+        return f'{value/3600:.1f}h'

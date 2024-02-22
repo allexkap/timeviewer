@@ -36,7 +36,7 @@
         <tr>
             {% for value, desc in line %}
             {% if value >= 0 %}
-            <td class="cell" style="background-color: rgba(65, 131, 196, {{value|round(3)}});" title="{{desc}}h" />
+            <td class="cell" style="background-color: rgba(65, 131, 196, {{value|round(3)}});" title="{{desc}}" />
             {% else %}
             <td class="cell" style="border-color: #0000;" />
             {% endif %}
