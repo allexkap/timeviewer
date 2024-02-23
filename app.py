@@ -54,16 +54,21 @@ def index():
             else:
                 break
 
-    titles = ('test0', 'test1', 'test2')  # gen titles from logs
+    titles = tuple(title for title, _ in logs[:].most_common())
 
     selected_title = request.form.get('title')
     if selected_title is None:
         selected_title = titles[0]
 
-    handler = get_log_handler()
+    handler = get_log_handler(titles=(selected_title,))
     table = gen_day_view(logs, handler, start, stop + timedelta(days=1), hour_shift=8)
     values = normalize(table)
     details = gen_details(table, start, logs.get_detail)
+
+    info = (
+        f'Max per day: {logs.get_detail(table.max())}',
+        f'On record: {logs.get_detail(table.sum())}',
+    )
 
     return render_template(
         'index.html',
@@ -71,6 +76,7 @@ def index():
         selected_title=selected_title,
         dates=(start, stop),
         data=zip2d(values, details),
+        info=info,
     )
 
 

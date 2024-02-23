@@ -14,7 +14,7 @@ def timerange(start, stop, step):
 def get_log_handler(titles=None):
     if titles is None:
         return lambda c: c.total()
-    return lambda c: sum((c[title] for title in titles), Counter())
+    return lambda c: sum(c[title] for title in titles)
 
 
 def gen_day_view(logs, log_handler, start, stop, hour_shift=8):
